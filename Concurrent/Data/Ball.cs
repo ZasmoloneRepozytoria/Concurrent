@@ -6,11 +6,11 @@
         public double PositionY { get; set; }
         public double Radius { get; set; }
 
-        public Ball(double pozycjaX, double pozycjaY, double promien)
+        public Ball(double positionX, double positionY, double radius)
         {
-            PositionX = pozycjaX;
-            PositionY = pozycjaY;
-            Radius = promien;
+            PositionX = positionX;
+            PositionY = positionY;
+            Radius = radius;
         }
 
         public void UpdatePosition(double newPositionX, double newPositionY)
