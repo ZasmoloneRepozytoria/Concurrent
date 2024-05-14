@@ -7,7 +7,7 @@
             {
                 _balls = new List<Ball>();
             }
-        public List<Ball> getBalls()
+        public List<Ball> GetBalls()
         {
             return _balls.ToList();
         }

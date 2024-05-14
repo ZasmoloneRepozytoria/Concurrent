@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Concurrent.Presentation.ViewModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,8 +17,15 @@ namespace Concurrent;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private readonly ViewModel _viewModel = new ViewModel();
     public MainWindow()
     {
         InitializeComponent();
+        DataContext = _viewModel;
+    }
+
+    private void CreateBalls_Click(object sender, RoutedEventArgs e)
+    {
+        _viewModel.CreateBalls_Click(sender, e); // Forward the event to the ViewModel
     }
 }

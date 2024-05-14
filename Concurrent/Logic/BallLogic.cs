@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace Concurrent.Logic
 {
@@ -19,6 +20,7 @@ namespace Concurrent.Logic
             _ballThreads = new List<Thread>();
         }
 
+
         public void CreateBall(double positionX, double positionY, double radius)
         {
             // Create a new ball
@@ -33,15 +35,17 @@ namespace Concurrent.Logic
             ballThread.Start();
         }
 
+       // public void CreateBalls(int amount);
+
         private void SimulateBallMovement(Ball ball)
         {
             Random random = new Random();
+            double deltaX = random.NextDouble() - 0.5; // Random value between -5 and 5
+            double deltaY = random.NextDouble() - 0.5; // Random value between -5 and 5
 
             while (true)
             {
                 // Simulate movement by updating ball position
-                double deltaX = random.NextDouble() * 10 - 5; // Random value between -5 and 5
-                double deltaY = random.NextDouble() * 10 - 5; // Random value between -5 and 5
 
                 // Update ball position
                 lock (ball) // Ensure thread-safe access to ball position
@@ -49,9 +53,25 @@ namespace Concurrent.Logic
                     ball.PositionX += deltaX;
                     ball.PositionY += deltaY;
                 }
+                if (ball.PositionX >= 450)
+                {
+                    deltaX = -deltaX;
+                }
+                else if (ball.PositionX <= 0)
+                {
+                    deltaX = -deltaX;
+                }
 
+                if (ball.PositionY >= 450)
+                {
+                    deltaY = -deltaY;
+                }
+                else if (ball.PositionY <= 0)
+                {
+                    deltaY = -deltaY;
+                }
                 // Sleep for a short duration to simulate periodic updates
-                Thread.Sleep(100); // Sleep for 1 second
+                Thread.Sleep(1); 
             }
         }
     }

@@ -1,0 +1,62 @@
+﻿<Window x:Class="Concurrent.MainWindow"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Concurrent.Presentation.ViewModel"
+        mc:Ignorable="d"
+        Title="Ball View" Height="600" Width="600">
+
+    <!-- Set DataContext to the BallViewModel -->
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="153*"/>
+            <ColumnDefinition Width="647*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Create a StackPanel for the controls -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10,10,10,10" Grid.ColumnSpan="2">
+            <!-- TextBlock and TextBox for specifying the amount of balls -->
+            <TextBlock Text="Amount:" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtAmount" Width="50" VerticalAlignment="Center" Margin="5"/>
+
+            <!-- Button for creating balls -->
+            <Button Content="Create Balls" Click="CreateBalls_Click" Margin="5"/>
+        </StackPanel>
+
+        <!-- Canvas for displaying the balls -->
+        <Canvas Grid.Row="1" Background="LightGray" Grid.ColumnSpan="2" Height="500" Width="500" VerticalAlignment="Bottom">
+            <!-- Use ItemsControl to display the balls -->
+            <ItemsControl ItemsSource="{Binding Balls}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="Canvas.Left" Value="{Binding PositionX}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding PositionY}"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <!-- DataTemplate to define how to display each ball -->
+                    <DataTemplate>
+                        <Ellipse Fill="Blue"
+                         Width="{Binding Radius}"
+                         Height="{Binding Radius}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Canvas>
+
+    </Grid>
+</Window>
