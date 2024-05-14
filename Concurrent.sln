@@ -1,8 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Concurrent", "Concurrent\Concurrent.csproj", "{8B2BCF77-EA07-471A-9866-5801D1D15A9B}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Concurrent", "Concurrent\Concurrent.csproj", "{8B2BCF77-EA07-471A-9866-5801D1D15A9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Concurrent.Tests", "Concurrent.Tests\Concurrent.Tests.csproj", "{169790EB-AA0B-4462-B946-994EB937B083}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Concurrent.Tests", "Concurrent.Tests\Concurrent.Tests.csproj", "{169790EB-AA0B-4462-B946-994EB937B083}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +21,11 @@ Global
 		{169790EB-AA0B-4462-B946-994EB937B083}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{169790EB-AA0B-4462-B946-994EB937B083}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{169790EB-AA0B-4462-B946-994EB937B083}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ADFAB6BA-E707-4978-BDAC-B9170468DBA5}
 	EndGlobalSection
 EndGlobal
