@@ -10,22 +10,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Concurrent;
-
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
+namespace Concurrent
 {
-    private readonly ViewModel _viewModel = new ViewModel();
-    public MainWindow()
-    {
-        InitializeComponent();
-        DataContext = _viewModel;
-    }
 
-    private void CreateBalls_Click(object sender, RoutedEventArgs e)
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
-        _viewModel.CreateBalls_Click(sender, e); // Forward the event to the ViewModel
+        private readonly ViewModel _viewModel = new ViewModel();
+        public MainWindow()
+        {
+            InitializeComponent();
+            DataContext = _viewModel;
+        }
+
+        private void CreateBalls_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.CreateBalls_Click(sender, e); // Forward the event to the ViewModel
+        }
     }
 }

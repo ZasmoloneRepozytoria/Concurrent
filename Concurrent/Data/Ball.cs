@@ -46,11 +46,42 @@ namespace Concurrent.Data
             }
         }
 
+        // New properties for velocity
+        private double _velocityX;
+        public double VelocityX
+        {
+            get { return _velocityX; }
+            set
+            {
+                if (_velocityX != value)
+                {
+                    _velocityX = value;
+                    OnPropertyChanged(nameof(VelocityX));
+                }
+            }
+        }
+
+        private double _velocityY;
+        public double VelocityY
+        {
+            get { return _velocityY; }
+            set
+            {
+                if (_velocityY != value)
+                {
+                    _velocityY = value;
+                    OnPropertyChanged(nameof(VelocityY));
+                }
+            }
+        }
+
         public Ball(double positionX, double positionY, double radius)
         {
             PositionX = positionX;
             PositionY = positionY;
             Radius = radius;
+            VelocityX = 0;
+            VelocityY = 0;
         }
 
         public void UpdatePosition(double newPositionX, double newPositionY)
