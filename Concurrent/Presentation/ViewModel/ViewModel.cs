@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows;
-using Model;
-using Concurrent.Data;
+﻿using Concurrent.Data;
+using Concurrent.Logic;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Concurrent.Presentation.ViewModel
 {
@@ -21,7 +14,7 @@ namespace Concurrent.Presentation.ViewModel
         {
             _ball = ball;
         }
-        
+
 
     }
 
@@ -29,16 +22,19 @@ namespace Concurrent.Presentation.ViewModel
     {
         private BallRepository _ballRepository;
         public ObservableCollection<Ball> Balls { get; set; }
-        public ViewModel() {
+        private DiagnosticLogger _logger;
+        public ViewModel()
+        {
             _ballRepository = new BallRepository();
             Balls = new ObservableCollection<Ball>();
+            _logger = new DiagnosticLogger("C:\\Users\\Public\\ball_simulation_log.txt");
         }
         public void CreateBalls_Click(object sender, RoutedEventArgs e)
         {
             // Parse the amount of balls from the text box
             if (int.TryParse((Application.Current.MainWindow.FindName("txtAmount") as TextBox)?.Text, out int amount))
             {
-                Model.Model.createBalls(amount, 30, _ballRepository);
+                Model.Model.createBalls(amount, 30, _ballRepository, _logger);
                 var ballsFromRepo = _ballRepository.GetBalls();
                 foreach (var ball in ballsFromRepo)
                 {

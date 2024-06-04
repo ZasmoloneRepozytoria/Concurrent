@@ -1,6 +1,5 @@
-﻿using NUnit.Framework;
-using System.Windows.Shapes;
-using Concurrent.Data;
+﻿using Concurrent.Data;
+using NUnit.Framework;
 namespace Concurrent.Tests;
 
 [TestFixture]

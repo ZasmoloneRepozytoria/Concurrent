@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Concurrent
 {
@@ -11,7 +9,7 @@ namespace Concurrent
     public partial class App : Application
     {
         [System.STAThread] // Dodaj atrybut STAThread
-                    // Metoda wejścia dla aplikacji
+                           // Metoda wejścia dla aplikacji
         public static void Main()
         {
             // Inicjalizacja aplikacji

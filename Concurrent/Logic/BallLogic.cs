@@ -1,23 +1,25 @@
 ﻿using Concurrent.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace Concurrent.Logic
 {
-    // Implementation of the ball logic
     public class BallLogic
     {
         private readonly BallRepository _ballRepository;
-        private readonly List<Task> _ballTasks;
+        private readonly DiagnosticLogger _logger;
         private readonly object _ballLock = new object();
         private readonly Random _random = new Random();
+        private readonly System.Timers.Timer _updateTimer;
 
-        public BallLogic(BallRepository ballRepository)
+        public BallLogic(BallRepository ballRepository, DiagnosticLogger logger)
         {
             _ballRepository = ballRepository;
-            _ballTasks = new List<Task>();
+            _logger = logger;
+            _updateTimer = new Timer(20); // Update interval in milliseconds
+            _updateTimer.Elapsed += UpdateTimer_Elapsed;
+            _updateTimer.AutoReset = true;
+            _updateTimer.Start();
         }
 
         public void CreateBall(double positionX, double positionY, double radius)
@@ -31,33 +33,29 @@ namespace Concurrent.Logic
 
             // Add the new ball to the repository
             _ballRepository.AddBall(newBall);
-
-            // Start a new task to simulate movement for the new ball
-            Task ballTask = Task.Run(() => SimulateBallMovementAsync(newBall));
-            _ballTasks.Add(ballTask);
         }
 
-        private async Task SimulateBallMovementAsync(Ball ball)
+        private void UpdateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            while (true)
+            lock (_ballLock)
             {
-                lock (_ballLock) // Ensure thread-safe access to all balls
+                // Update ball positions and check for collisions
+                foreach (var ball in _ballRepository.GetBalls())
                 {
-                    // Update ball position
                     ball.PositionX += ball.VelocityX;
                     ball.PositionY += ball.VelocityY;
 
                     // Check for collision with walls
-                    if (ball.PositionX >= 450 + ball.Radius/2 || ball.PositionX <= 0)
+                    if (ball.PositionX >= 450 - ball.Radius || ball.PositionX <= ball.Radius)
                     {
                         ball.VelocityX = -ball.VelocityX;
-                       // ball.PositionX = Math.Clamp(ball.PositionX, ball.Radius, 450 - ball.Radius);
+                        ball.PositionX = Math.Clamp(ball.PositionX, ball.Radius, 450 - ball.Radius);
                     }
 
-                    if (ball.PositionY >= 450 + ball.Radius/2 || ball.PositionY <= 0)
+                    if (ball.PositionY >= 450 - ball.Radius || ball.PositionY <= ball.Radius)
                     {
                         ball.VelocityY = -ball.VelocityY;
-                       // ball.PositionY = Math.Clamp(ball.PositionY, ball.Radius, 450 - ball.Radius);
+                        ball.PositionY = Math.Clamp(ball.PositionY, ball.Radius, 450 - ball.Radius);
                     }
 
                     // Check for collision with other balls
@@ -66,12 +64,10 @@ namespace Concurrent.Logic
                         if (IsColliding(ball, otherBall))
                         {
                             ResolveCollision(ball, otherBall);
+                            _ = Task.Run(async () => await _logger.LogBallStateAsync(ball));
                         }
                     }
                 }
-
-                // Delay for a short duration to simulate periodic updates
-                await Task.Delay(10);
             }
         }
 
@@ -80,7 +76,7 @@ namespace Concurrent.Logic
             double dx = ball1.PositionX - ball2.PositionX;
             double dy = ball1.PositionY - ball2.PositionY;
             double distance = Math.Sqrt(dx * dx + dy * dy);
-            return distance < ball1.Radius + ball2.Radius/100;
+            return distance < (ball1.Radius + ball2.Radius)/2;
         }
 
         private void ResolveCollision(Ball ball1, Ball ball2)
